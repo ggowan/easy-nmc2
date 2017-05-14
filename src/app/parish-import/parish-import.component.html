@@ -1,0 +1,32 @@
+<div id="firebaseui-auth-container"></div>
+<md-input-container>
+  <input #url md-input type="text" size=50 placeholder="Spreadsheet URL">
+</md-input-container>
+<button md-raised-button (click)="onAnalyzeSpreadsheet(url.value)">Analyze Spreadsheet</button>
+<div *ngIf="spreadsheet">
+  <div>Title: {{spreadsheet.title}}</div>
+  <div>Sheet: {{spreadsheet.sheetTitle}}</div>
+  <table border="1">
+    <tr *ngFor="let row of spreadsheet.table">
+      <td *ngFor="let cell of row">
+        {{cell}}
+      </td>
+    </tr>
+  </table>
+</div>
+<div *ngIf="proposedChanges">
+  <table border="1">
+    <tr>
+      <th *ngFor="let field of fields">
+        {{field}}
+      </th>
+    </tr>
+    <tr *ngFor="let change of proposedChanges">
+      <td *ngFor="let field of fields">
+        <span *ngIf="change.oldValue[field] === change.newValue[field]">{{change.newValue[field]}}</span>
+        <span *ngIf="change.oldValue[field] !== change.newValue[field]"><del>{{change.oldValue[field]}}</del><br><ins>{{change.newValue[field]}}</ins></span>
+      </td>
+    </tr>
+  </table>
+  <button md-raised-button (click)="onApproveAll()">Approve All</button>
+</div>
